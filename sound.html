@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>M L</title>
+    <title>Morse Training</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://getbootstrap.com/docs/5.3/examples/cover/cover.css">
@@ -57,16 +57,16 @@
         "--..": "Z"
     };
 
-    morseDict = {
-        ".-": "A",
-        "-.": "N",
-
-        "..-": "U",
-        "-..": "D",
-
-        "...-": "V",
-        "-...": "B",
-    }
+    // morseDict = {
+    //     ".-": "A",
+    //     "-.": "N",
+    //
+    //     "..-": "U",
+    //     "-..": "D",
+    //
+    //     "...-": "V",
+    //     "-...": "B",
+    // }
 
     let targetLetter, targetCode, wrong = []
 
@@ -123,8 +123,8 @@
 
         if (pressedKey === targetLetter) {
             let score = parseInt($('#score').text());
-            $("#score").text(score + 1);
             if (wrong && !hinted) {
+                $("#score").text(score + 1);
                 wrong = wrong.filter(wrong => wrong !== targetLetter);
                 $("#wrong").text(wrong.join(", "));
             }
