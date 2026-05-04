@@ -26,6 +26,7 @@
     <main class="px-3">
         <h1 id="soal" class="fw-bold"></h1>
         <h1 id="jawaban"></h1>
+        <h1 id="guest" class="fw-bold"></h1>
 
         <p class="lead mt-5">
             <button id="short" class="btn btn-lg btn-light fw-bold border-white bg-white">Short</button>
@@ -79,6 +80,7 @@
 
     function resetRound() {
         currentMorse = ""
+        document.getElementById("guest").innerHTML = "&nbsp;";
         const keys = Object.keys(morseDict);
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
 
@@ -101,6 +103,7 @@
         currentMorse += char;
 
         clearTimeout(timer);
+        document.getElementById("guest").innerText = currentMorse;
 
         timer = setTimeout(() => {
             executeTranslation();
@@ -121,6 +124,7 @@
         }
         setTimeout(() => {
             document.body.classList.remove("bg-success");
+            document.body.classList.remove("bg-danger");
             resetRound();
         }, 800);
 
