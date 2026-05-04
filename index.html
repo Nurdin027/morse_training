@@ -19,6 +19,7 @@
         <div class="inner">
             <nav class="nav nav-masthead justify-content-center">
                 <a id="training" class="nav-link" href="?level=training">Training</a>
+                <a id="sound" class="nav-link" href="?level=sound">Sound Training</a>
                 <a id="test" class="nav-link" href="?level=test">Test</a>
             </nav>
         </div>
@@ -43,11 +44,14 @@
 <script src="https://code.jquery.com/jquery-4.0.0.slim.min.js"
         integrity="sha256-8DGpv13HIm+5iDNWw1XqxgFB4mj+yOKFNb+tHBZOowc=" crossorigin="anonymous"></script>
 <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
     const urlParams = new URLSearchParams(window.location.search);
     let currentLevel = urlParams.get('level') || 'training';
 
     document.getElementById("training").classList.toggle("active", currentLevel === "training");
     document.getElementById("test").classList.toggle("active", currentLevel === "test");
+    document.getElementById("sound").classList.toggle("active", currentLevel === "sound");
 
     const morseDict = {
         ".-": "A",
@@ -89,7 +93,10 @@
         document.getElementById("soal").innerText = targetLetter;
         document.getElementById("jawaban").innerText = "";
         if (currentLevel === "training") {
+            playTargetMorse(targetMorse);
             document.getElementById("kode").innerText = targetMorse;
+        } else if (currentLevel === "sound") {
+            playTargetMorse(targetMorse);
         }
     }
 
@@ -100,6 +107,12 @@
     resetRound();
 
     function addInput(char) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (char === ".") {
+            playSound(.3);
+        } else {
+            playSound(.9);
+        }
         currentMorse += char;
 
         clearTimeout(timer);
@@ -130,6 +143,36 @@
 
         currentMorse = "";
     }
+
+    function playSound(duration) {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + duration);
+    }
+
+    async function playTargetMorse(morseStr) {
+        for (const char of morseStr) {
+            if (char === ".") {
+                playSound(0.3);
+                await new Promise(r => setTimeout(r, 300));
+            } else if (char === "-") {
+                playSound(0.9);
+                await new Promise(r => setTimeout(r, 500));
+            }
+        }
+    }
+
 
     document.getElementById("short").addEventListener("click", function () {
         addInput(".");
