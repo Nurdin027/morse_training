@@ -14,45 +14,65 @@
     </style>
 </head>
 <body class="text-center">
-<button id="ready" class="btn btn-success m-5">Ready</button>
-<div class="p-5" id="score"></div>
-<div class="p-5" id="wrong"></div>
-<div class="d-md-none position-absolute" style="bottom: 10svh;">
-    <div class="row" id="mobile-btn">
-        <div class="col-12 my-1">
-            <button class="btn_huruf" data-key="q">Q</button>
-            <button class="btn_huruf" data-key="w">W</button>
-            <button class="btn_huruf" data-key="e">E</button>
-            <button class="btn_huruf" data-key="r">R</button>
-            <button class="btn_huruf" data-key="t">T</button>
-            <button class="btn_huruf" data-key="y">Y</button>
-            <button class="btn_huruf" data-key="u">U</button>
-            <button class="btn_huruf" data-key="i">I</button>
-            <button class="btn_huruf" data-key="o">O</button>
-            <button class="btn_huruf" data-key="p">P</button>
-        </div>
-        <div class="col-12 my-1">
-            <button class="btn_huruf" data-key="a">A</button>
-            <button class="btn_huruf" data-key="s">S</button>
-            <button class="btn_huruf" data-key="d">D</button>
-            <button class="btn_huruf" data-key="f">F</button>
-            <button class="btn_huruf" data-key="g">G</button>
-            <button class="btn_huruf" data-key="h">H</button>
-            <button class="btn_huruf" data-key="j">J</button>
-            <button class="btn_huruf" data-key="k">K</button>
-            <button class="btn_huruf" data-key="l">L</button>
-        </div>
-        <div class="col-12 my-1">
-            <button class="btn_huruf" data-key="z">Z</button>
-            <button class="btn_huruf" data-key="x">X</button>
-            <button class="btn_huruf" data-key="c">C</button>
-            <button class="btn_huruf" data-key="v">V</button>
-            <button class="btn_huruf" data-key="b">B</button>
-            <button class="btn_huruf" data-key="n">N</button>
-            <button class="btn_huruf" data-key="m">M</button>
+<header class="masthead mb-auto">
+    <div class="inner">
+        <nav class="nav nav-masthead justify-content-end">
+            <div class="dropdown nav-link">
+                <button class="btn dropdown-toggle" type="button" id="level_select"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Level
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?level=1">Level 1</a></li>
+                    <li><a class="dropdown-item" href="?level=2">Level 2</a></li>
+                    <li><a class="dropdown-item" href="?level=3">Level 3</a></li>
+                    <li><a class="dropdown-item" href="?level=4">Level 4</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<main>
+    <button id="ready" class="btn btn-success m-5">Ready</button>
+    <div class="p-5" id="score"></div>
+    <div class="p-5" id="wrong"></div>
+    <div class="d-md-none position-absolute" style="bottom: 10svh;">
+        <div class="row" id="mobile-btn">
+            <div class="col-12 my-1">
+                <button class="btn_huruf" data-key="q">Q</button>
+                <button class="btn_huruf" data-key="w">W</button>
+                <button class="btn_huruf" data-key="e">E</button>
+                <button class="btn_huruf" data-key="r">R</button>
+                <button class="btn_huruf" data-key="t">T</button>
+                <button class="btn_huruf" data-key="y">Y</button>
+                <button class="btn_huruf" data-key="u">U</button>
+                <button class="btn_huruf" data-key="i">I</button>
+                <button class="btn_huruf" data-key="o">O</button>
+                <button class="btn_huruf" data-key="p">P</button>
+            </div>
+            <div class="col-12 my-1">
+                <button class="btn_huruf" data-key="a">A</button>
+                <button class="btn_huruf" data-key="s">S</button>
+                <button class="btn_huruf" data-key="d">D</button>
+                <button class="btn_huruf" data-key="f">F</button>
+                <button class="btn_huruf" data-key="g">G</button>
+                <button class="btn_huruf" data-key="h">H</button>
+                <button class="btn_huruf" data-key="j">J</button>
+                <button class="btn_huruf" data-key="k">K</button>
+                <button class="btn_huruf" data-key="l">L</button>
+            </div>
+            <div class="col-12 my-1">
+                <button class="btn_huruf" data-key="z">Z</button>
+                <button class="btn_huruf" data-key="x">X</button>
+                <button class="btn_huruf" data-key="c">C</button>
+                <button class="btn_huruf" data-key="v">V</button>
+                <button class="btn_huruf" data-key="b">B</button>
+                <button class="btn_huruf" data-key="n">N</button>
+                <button class="btn_huruf" data-key="m">M</button>
+            </div>
         </div>
     </div>
-</div>
+</main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -63,7 +83,8 @@
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     const urlParams = new URLSearchParams(window.location.search);
-    let currentLevel = urlParams.get('level') || 'training';
+    let currentLevel = urlParams.get('level') || '4';
+    $("#level_select").text("Level " + currentLevel);
 
     let morseDict = {
         ".-": "A",
@@ -94,15 +115,124 @@
         "--..": "Z"
     };
 
-    morseDict = {
-        ".-": "A",
-        "-.": "N",
+    if (currentLevel === '1') {
+        morseDict = {
+            ".": "E",
+            "..": "I",
+            "...": "S",
+            "....": "H",
 
-        "..-": "U",
-        "-..": "D",
+            "-": "T",
+            "--": "M",
+            "---": "O",
+        }
+    } else if
+    (currentLevel === '2') {
+        morseDict = {
+            // region from level 1
+            ".": "E",
+            "..": "I",
+            "...": "S",
+            "....": "H",
 
-        "...-": "V",
-        "-...": "B",
+            "-": "T",
+            "--": "M",
+            "---": "O",
+            // endregion from level 1
+
+            ".-": "A",
+            "-.": "N",
+
+            "..-": "U",
+            "-..": "D",
+
+            "-.-": "K",
+            ".-.": "R",
+
+            "--.": "G",
+            ".--": "W",
+        }
+    } else if
+    (currentLevel === '3') {
+        morseDict = {
+            // region from level 2
+            ".": "E",
+            "..": "I",
+            "...": "S",
+            "....": "H",
+
+            "-": "T",
+            "--": "M",
+            "---": "O",
+
+            ".-": "A",
+            "-.": "N",
+
+            "..-": "U",
+            "-..": "D",
+
+            "-.-": "K",
+            ".-.": "R",
+
+            "--.": "G",
+            ".--": "W",
+            // endregion from level 2
+
+            "...-": "V",
+            "-...": "B",
+
+            ".--.": "P",
+            "-..-": "X",
+
+            "..-.": "F",
+            ".-..": "L",
+
+            "--.-": "Q",
+            "-.--": "Y",
+        }
+    } else if
+    (currentLevel === '4') {
+        morseDict = {
+            // region from level 3
+            ".": "E",
+            "..": "I",
+            "...": "S",
+            "....": "H",
+
+            "-": "T",
+            "--": "M",
+            "---": "O",
+
+            ".-": "A",
+            "-.": "N",
+
+            "..-": "U",
+            "-..": "D",
+
+            "-.-": "K",
+            ".-.": "R",
+
+            "--.": "G",
+            ".--": "W",
+
+            "...-": "V",
+            "-...": "B",
+
+            ".--.": "P",
+            "-..-": "X",
+
+            "..-.": "F",
+            ".-..": "L",
+
+            "--.-": "Q",
+            "-.--": "Y",
+
+            // endregion from level 3
+
+            "-.-.": "C",
+            "--..": "Z",
+            ".---": "J",
+        }
     }
 
     let targetLetter, targetCode, wrong = []
