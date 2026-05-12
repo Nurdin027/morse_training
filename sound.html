@@ -33,7 +33,7 @@
     </div>
 </header>
 <main>
-    <button id="ready" class="btn btn-success m-5">Ready</button>
+    <button id="ready" class="btn btn-success m-5" autofocus>Ready</button>
     <div class="p-5" id="score"></div>
     <div class="p-5" id="wrong"></div>
     <div class="d-md-none position-absolute" style="bottom: 10svh;">
@@ -299,19 +299,26 @@
     function pressed(pressedKey) {
         if (!/^[A-Z]$/.test(pressedKey)) return;
         if (pressedKey === targetLetter) {
-            let score = parseInt($('#score').text());
-            if (wrong && !hinted) {
-                $("#score").text(score + 1);
-                wrong = wrong.filter(wrong => wrong !== targetLetter);
-                $("#wrong").text(wrong.join(", "));
-            }
-            hinted = false
-            resetRound();
+            responseBg("success");
+            setTimeout(function () {
+                let score = parseInt($('#score').text());
+                if (wrong && !hinted) {
+                    $("#score").text(score + 1);
+                    wrong = wrong.filter(wrong => wrong !== targetLetter);
+                    $("#wrong").text(wrong.join(", "));
+                }
+                hinted = false
+                resetRound();
+            }, 500)
         } else {
-            playTargetMorse(targetCode);
-            wrong.push(targetLetter)
-            hinted = true;
-            $("#wrong").text(wrong.join(", "));
+            responseBg("danger");
+            setTimeout(function () {
+                playTargetMorse(targetCode);
+                wrong.push(targetLetter)
+                hinted = true;
+                $("#wrong").text(wrong.join(", "));
+            }, 500)
+
         }
     }
 
@@ -319,6 +326,15 @@
         this.text(0);
         resetRound();
     });
+
+    function responseBg(status = "success") {
+        $("body").addClass(`bg-${status}`);
+        setTimeout(() => {
+            $("body")
+                .removeClass("bg-success")
+                .removeClass("bg-danger")
+        }, 400);
+    }
 
 </script>
 </html>
